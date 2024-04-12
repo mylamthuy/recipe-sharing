@@ -1,0 +1,57 @@
+[
+    {
+      "id": "0001",
+      "name": "Kimchi Soup",
+      "category": "korean",
+      "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0002",
+        "name": "Bibimbap",
+        "category": "korean",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id ": "0003",
+        "name": "Beef Pho",
+        "category": "vietnamese",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0004",
+        "name": "Banh Mi",
+        "category": "vietnamese",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0005",
+        "name": "Pad Thai",
+        "category": "thai",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0006",
+        "name": "Tom Yum",
+        "category": "thai",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0007",
+        "name": "Chicken Curry",
+        "category": "indian",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0008",
+        "name": "Tteokbokki",
+        "category": "korean",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    },
+    {
+        "id": "0009",
+        "name": "Kimchi Fried Rice",
+        "category": "korean",
+        "image": "https://reactnative.dev/img/tiny_logo.png"
+    }
+
+]
