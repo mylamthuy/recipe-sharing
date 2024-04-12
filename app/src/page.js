@@ -1,14 +1,36 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { Styles } from "./styles";
+import { Styles } from "../styles";
+import { useUserAuth } from "./_utils/auth-context";
+
 import Header from "./components/header";
 import dishData from "./dishes.json";
 import DishList from "./components/dishList";
 
 export default function Page() {
+  const { user, gitHubSignIn, gitHubSignOut } = useUserAuth();
   const [dishes, setDishes] = useState(dishData);
   const [filter, setFilter] = useState("all");
+
+  async function handleSignIn() {
+    try {
+        await gitHubSignIn();
+    }
+    catch (error){
+        console.error(error);
+    }
+  }
+
+    async function handleSignOut() {
+      try {
+          await gitHubSignOut();
+      }
+      catch (error){
+          console.error(error);
+      }
+    }
+
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
     if (e.target.value === "all") {

@@ -19,7 +19,7 @@ export const AuthContextProvider = ({ children }) => {
     return signInWithPopup(auth, provider);
   };
 
-  const firebaseSignOut = () => {
+  const gitHubSignOut = () => {
     return signOut(auth);
   };
 
@@ -31,7 +31,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [user]);
 
   return (
-    <AuthContext.Provider value={{ user, gitHubSignIn, firebaseSignOut }}>
+    <AuthContext.Provider value={{ user, gitHubSignIn, gitHubSignOut }}>
       {children}
     </AuthContext.Provider>
   );

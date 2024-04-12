@@ -1,4 +1,4 @@
-import { Styles } from "../styles";
+import { Styles } from "../../styles";
 
 export default function Heading1() {
     return (
