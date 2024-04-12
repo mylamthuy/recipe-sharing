@@ -6,6 +6,9 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 250, 249, 246;
   --background-end-rgb: 250, 249, 246;
+  --title-color: 24, 111, 101; /* #186F65 */
+  --text-color: 41, 41, 41;    /* #292929 */
+  --border-color: 24, 111, 101; /* #186F65 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,4 +33,40 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Color classes */
+.title-color {
+  color: rgb(var(--title-color));
+}
+
+.text-color {
+  color: rgb(var(--text-color));
+}
+
+.border-color {
+  border-color: rgb(var(--border-color));
+}
+
+/* Fonts */
+.font-libre-baskerville {
+  font-family: 'Libre Baskerville', serif;
+}
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Importing Libre Baskerville font */
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+}
+
+/* Importing Roboto font */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 }

@@ -12,4 +12,7 @@ export const Styles = {
     justifyContent: "space-between",
     margin: "25px",
   },
+  heading1: {
+    fontFamily: "Libre Baskerville",
+  }
 };
