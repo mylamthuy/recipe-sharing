@@ -7,7 +7,7 @@ import Header from "./components/header";
 import dishData from "./dishes.json";
 import DishList from "./components/dishList";
 
-export default function Page() {
+export default function Home() {
   const { user, gitHubSignIn, gitHubSignOut } = useUserAuth();
   const [dishes, setDishes] = useState(dishData);
   const [filter, setFilter] = useState("all");

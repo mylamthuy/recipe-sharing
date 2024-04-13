@@ -9,6 +9,7 @@
   --title-color: 24, 111, 101; /* #186F65 */
   --text-color: 41, 41, 41;    /* #292929 */
   --border-color: 24, 111, 101; /* #186F65 */
+  --secondary-background-color: 253, 250, 243 /* #FDFAF3 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,6 +47,11 @@ body {
 
 .border-color {
   border-color: rgb(var(--border-color));
+}
+
+.secondary-background-color {
+  background-color: rgb(var(--secondary-background-color));
+  opacity: 0.5;
 }
 
 /* Fonts */
