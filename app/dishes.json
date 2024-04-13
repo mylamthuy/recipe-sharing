@@ -1,9 +1,30 @@
 [
     {
-      "id": "0001",
-      "name": "Kimchi Soup",
-      "category": "korean",
-      "image": "https://reactnative.dev/img/tiny_logo.png"
+        "id": "0001",
+        "name": "Kimchi Soup",
+        "category": "korean",
+        "cookingTime": "1 hour",
+        "serving": "4",
+        "image": "https://reactnative.dev/img/tiny_logo.png",
+        "ingredients": [
+          "Kimchi",
+          "Tofu",
+          "Pork",
+          "Onion",
+          "Garlic",
+          "Soy Sauce",
+          "Sesame Oil"
+        ],
+        "steps": [
+          "Prepare ingredients",
+          "Heat pot and sauté onion and garlic",
+          "Add pork and cook until browned",
+          "Add kimchi and cook for a few minutes",
+          "Add water and bring to a boil",
+          "Add tofu and simmer for 10 minutes",
+          "Season with soy sauce and sesame oil",
+          "Serve hot"
+        ]
     },
     {
         "id": "0002",
