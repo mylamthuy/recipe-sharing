@@ -33,7 +33,7 @@ function Info({ category, cookingTime, serving, img, ingredients, steps }) {
           </div>
         </div>
         <div className="col-span-1">
-          <div className="border-2 border-color rounded-3xl p-4 background-color: bg-[#fdfaf3]/80 ">
+          <div className="border-2 border-color rounded-3xl p-4 secondary-background-color ">
             <h3 className="text-xl font-bold mb-2 title-color">Ingredients</h3>
             {Array.isArray(ingredients) && ingredients.length > 0 ? (
               <ul className="text-lg text-color">
