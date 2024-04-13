@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { Styles } from "../styles";
 import { useUserAuth } from "./_utils/auth-context";
 
 import Header from "./components/header";
