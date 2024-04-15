@@ -65,7 +65,10 @@ body {
 /* Importing Libre Baskerville font */
 @font-face {
   font-family: 'Libre Baskerville';
-  src: url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/librebaskerville/v14/kmKnZrc3Hgbbcjq75U4uslyuy4kn0qNZaxM.woff2) format('woff2');
 }
 
 /* Importing Roboto font */
@@ -73,5 +76,6 @@ body {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
-  src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');
 }

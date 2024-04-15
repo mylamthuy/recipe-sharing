@@ -1,10 +1,15 @@
 "use client";
 import React from "react";
-import Heading1 from "../components/heading1";
 import NewPost from "../components/new-post";
+import Header from "../components/header";
 
 export default function Profile() {
   return (
-    <NewPost />
+    <div>
+      <div>
+        <Header />
+      </div>
+        <NewPost />
+    </div>
   );
 }

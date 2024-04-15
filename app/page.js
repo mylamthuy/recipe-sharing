@@ -1,69 +1,50 @@
-"use client"
-import { HashRouter, Link, Route, Routes } from "react-router-dom";
-import { useUserAuth } from "./_utils/auth-context";
+ "use client"
+import Header from "./components/header"
+import React from "react";
+import { useState } from "react";
+import dishData from "./dishes.json";
+import DishList from "./components/dishList";
 
-import Home from "./pages/home.js";
-import Profile from "./pages/profile.js";
+export default function Page() {
+    const [dishes, setDishes] = useState(dishData);
+    const [filter, setFilter] = useState("all");
 
-export default function App() {
-    const { user, gitHubSignIn, gitHubSignOut } = useUserAuth();
-
-    async function handleSignIn() {
-        try {
-            await gitHubSignIn();
+    const handleFilterChange = (e) => {
+        setFilter(e.target.value);
+        if (e.target.value === "all") {
+        setDishes(dishData);
+        } else {
+        const filteredDishes = dishData.filter(
+            (dish) => dish.category === e.target.value
+        );
+        setDishes(filteredDishes);
         }
-        catch (error){
-            console.error(error);
-        }
-    }
-
-    async function handleSignOut() {
-        try {
-            await gitHubSignOut();
-        }
-        catch (error){
-            console.error(error);
-        }
-    }
+    };
     return (
-        <div className="App">
-            <HashRouter>
-                {/* <AuthContextProvider> */}
-                    <nav>
-                        <ul className="flex mx-6 mt-3 mb-1 p-2">
-                            
-                            <li className="flex-auto w-3/5 title-color font-libre-baskerville text-2xl">
-                                <Link to="/">Kitchen Diary</Link>
-                            </li>
-                            <li className="flex-auto w-1/4 text-lg font-roboto text-color">
-                                <Link to="/profile">Profile</Link>
-                            </li>
-                            <li className="flex-auto w-1/6">
-                                {user ? (
-                                    <button
-                                        onClick={handleSignOut}
-                                        className="text-lg font-roboto text-color w-max"
-                                    >
-                                        Sign Out
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={handleSignIn}
-                                        className="text-lg font-roboto text-color w-max"
-                                    >
-                                        Sign In
-                                    </button>
-                                )}
-                            </li>
-                            {/* <li className="flex-auto text-lg font-roboto text-color">Log Out</li> */}
-                        </ul>
-                    </nav>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/profile" element={<Profile />} />
-                    </Routes>
-                {/* </AuthContextProvider> */}
-            </HashRouter>
-        </div>
-    )
+        <main>
+            <div>
+                <Header />
+            </div>
+            <div>
+                <div className="text-right mr-5">
+                    <select
+                    className="border border-gray-300 rounded-md px-2 py-1"
+                    value={filter}
+                    onChange={handleFilterChange}
+                    >
+                    <option value="all">All</option>
+                    <option value="indian">Indian</option>
+                    <option value="korean">Korean</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="vietnamese">Vietnamese</option>
+                    <option value="western">Western</option>
+                    <option value="thai">Thai</option>
+                    <option value="european">European</option>
+                    </select>
+                </div>
+
+                <DishList dishes={dishes} />
+            </div>
+        </main>
+    );
 }
