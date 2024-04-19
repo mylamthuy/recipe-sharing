@@ -43,48 +43,34 @@ export default function NewPost({onCreatePost, onCloseForm}) {
     };
 
     const handlePostTitleChange = (event) => {
-        if (event.target.value !== ""){
         setPostTitle(event.target.value);
-        }
     };
 
     const handleCategoryChange = (event) => {
-        if (event.target.value !== ""){
             setCategory(event.target.value);
-        }
     };
 
     const handleTimeTakenChange = (event) => {
-        if (event.target.value !== ""){
             setTimeTaken(event.target.value);
-        }
     };
 
     const handlePortionChange = (event) => {
-        if (event.target.value !== ""){
             setPortion(event.target.value);
-        }
     };
 
     const handleDescritionChange = (event) => {
-        if (event.target.value !== ""){
             setDescription(event.target.value);
-        }
     };
 
     const handleImageURLChange = (event) => {
-        if (event.target.value !== ""){
             setImageUrl(event.target.value);
-        }
     };
 
     // Ingredient functions
     const handleAddIngredient = (e) => {
         e.preventDefault();
-        if (ingredientInput.trim() !== '') {
             setIngredients([...ingredients, ingredientInput.trim()]);
             setIngredientInput(''); // Clear input field after adding ingredient
-        }
     };
 
     const handleKeyDown = (e) => {
