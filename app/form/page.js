@@ -8,13 +8,14 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import IngredientModal from "../components/ingredientModal";
 import InstructionModal from "../components/instructionModal";
-import { set } from "react-hook-form";
 
-export default function NewPost() {
+export default function NewPost({onCreatePost, onCloseForm}) {
     const [postTitle, setPostTitle] = useState("");
     const [category, setCategory] = useState("");
     const [timeTaken, setTimeTaken] = useState("");
     const [portion, setPortion] = useState("");
+    const [imageUrl, setImageUrl] = useState(null);
+    const [description, setDescription] = useState("");
     const [ingredientInput, setIngredientInput] = useState("");
     const [ingredients, setIngredients] = useState([]);
     const [modalIngredientOpen, setModalIngredientOpen] = useState(false);
@@ -24,6 +25,22 @@ export default function NewPost() {
     const [instructions, setInstructions] = useState([]);
     const [modalInstructionOpen, setModalInstructionOpen] = useState(false);
     const [instructionToEdit, setInstructionToEdit] = useState(null);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const newPost = {
+            title: postTitle,
+            category: category,
+            timeTaken: timeTaken,
+            portion: portion,
+            imageUrl: imageUrl,
+            description: description,
+            ingredients: ingredients,
+            instructions: instructions,
+        };
+        onCreatePost(newPost);
+        onCloseForm();
+    };
 
     const handlePostTitleChange = (event) => {
         if (event.target.value !== ""){
@@ -41,13 +58,25 @@ export default function NewPost() {
         if (event.target.value !== ""){
             setTimeTaken(event.target.value);
         }
-    }
+    };
 
     const handlePortionChange = (event) => {
         if (event.target.value !== ""){
             setPortion(event.target.value);
         }
-    }
+    };
+
+    const handleDescritionChange = (event) => {
+        if (event.target.value !== ""){
+            setDescription(event.target.value);
+        }
+    };
+
+    const handleImageURLChange = (event) => {
+        if (event.target.value !== ""){
+            setImageUrl(event.target.value);
+        }
+    };
 
     // Ingredient functions
     const handleAddIngredient = (e) => {
@@ -205,6 +234,10 @@ export default function NewPost() {
                 </select>
             </div>
             <div className="mb-6">
+                 <Label text='Image'/>
+                 
+            </div>
+            <div className="mb-6">
                 <Label text='Short Description'/>
                 <textarea 
                     className="block w-full content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
@@ -212,6 +245,8 @@ export default function NewPost() {
                     name="short-description"
                     rows="3"
                     placeholder="Enter a short description for your post"
+                    value={description}
+                    onChange={handleDescritionChange}
                 ></textarea>
             </div>
 
@@ -230,7 +265,7 @@ export default function NewPost() {
                         onKeyDown={handleKeyDown}
                     />
                     <button
-                        className=" w-16 font-bold font-roboto text-white green-background-color mt-2 mb-4 border border-color rounded-md py-1 focus:outline-none"
+                        className=" w-16 font-bold font-roboto text-white green-background-color mt-2 mb-4 border border-color rounded-md py-1 focus:outline-none hover:bg-green-800"
                         onClick={handleAddIngredient}
                     >Add</button>
                 </div>
@@ -260,7 +295,7 @@ export default function NewPost() {
                 )}
             </div>
             
-            <div >
+            <div>
                 <Label text='Instructions'/>
                 <div>
                     <label className="text-lg content-color ml-2">Step Title</label>
@@ -286,10 +321,12 @@ export default function NewPost() {
                         onChange={(e) => setInstructionDescription(e.target.value)}
                     ></textarea>
                 </div>
+                <div className="flex justify-center">
                     <button
-                            className="block w-64 font-bold font-roboto text-white green-background-color mt-2 mb-6 border border-color rounded-md py-2 focus:outline-none"
+                            className="block w-1/4 font-bold font-roboto text-white green-background-color mt-2 mb-6 border border-color rounded-md py-2 focus:outline-none hover:bg-green-800"
                             onClick={handleAddInstruction}
-                        >Add</button>
+                    >Add</button>
+                </div>
                 <ul className="mb-4 w-full">
                     {instructions.map((instruction, index) => (
                         <li key={index} className="flex w-full items-center justify-between pl-2 mb-2">
@@ -319,6 +356,11 @@ export default function NewPost() {
                         defaultValue={instructionToEdit !== null && instructions[instructionToEdit]}
                     />
                 )}
+            </div>
+            <div className="flex justify-center">
+                <button className="w-4/5 text-lg font-roboto green-background-color text-white p-2 m-6 rounded-lg items-center justify-center hover:bg-green-800 hover:font-bold">
+                    Submit
+                </button>
             </div>
             </form>
             </div>
