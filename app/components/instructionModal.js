@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import { set } from "react-hook-form";
 
 export default function InstructionModal ({closeModal, onSave, defaultValue}) {
     const [instruction, setInstruction] = useState(
@@ -38,7 +37,7 @@ export default function InstructionModal ({closeModal, onSave, defaultValue}) {
 
     return (
         <div 
-            className="absolute inset-0 h-content w-full bg-gray-300/50 flex justify-center items-center"
+            className="absolute inset-0 w-full bg-gray-300/50 h-content flex justify-center items-center"
             onClick={closeModal}
         >
             <div 

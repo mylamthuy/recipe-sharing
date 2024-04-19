@@ -1,20 +1,36 @@
 "use client";
-import Header from "./components/header";
 import React from "react";
 import { useState, useEffect } from "react";
+import Header from "./components/header";
+import NewPost from "./components/new-post";
+import NewPostButton from "./components/new-post-button";
+import { useUserAuth } from "./_utils/auth-context";
 import dishData from "./dishes.json";
 import DishList from "./components/dishList";
 import { getDishes, addDish, uploadImage } from "./_services/recipe-service.js";
-import { useUserAuth } from "./_utils/auth-context";
 import { storage } from "./_utils/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 
 export default function Page() {
   const { user } = useUserAuth();
+  const [posts, setPosts] = useState([]);
+  const [newPostOpen, setNewPostOpen] = useState(false);
+
   const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("all");
   const [image, setImage] = useState(null);
+
+  const handleCreatePost = (post) => {
+    post.dateCreated = new Date();
+    post.creator = { id: user.uid, name: user.displayName };
+    addDish(user.uid, post, image);
+  };
+
+  const handleCloseNewPost = () => { 
+    setNewPostOpen(false);
+  };
+
   const fetchDishes = async () => {
     if (user) {
       console.log("Fetching dishes for user:", user.uid);
@@ -152,6 +168,14 @@ export default function Page() {
           </div>
         )}
       </div>
+      {user && <NewPostButton onClick={() => setNewPostOpen(true)} />} 
+      {newPostOpen && (
+        <NewPost
+          onCreatePost={handleCreatePost}
+          onCloseForm={handleCloseNewPost}
+          onSetImage={setImage}
+        />
+      )} 
     </main>
   );
 }

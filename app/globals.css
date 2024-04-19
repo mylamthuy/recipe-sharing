@@ -9,6 +9,7 @@
   --title-color: 24, 111, 101; /* #186F65 */
   --content-color: 41, 41, 41;    /* #292929 */
   --border-color: 24, 111, 101; /* #186F65 */
+  --main-background-color: 250, 249, 246; /* #FAF9F6 */
   --secondary-background-color: 253, 250, 243; /* #FDFAF3 */
   --green-background-color: 24, 111, 101; /* #186F65 */
 }
@@ -48,6 +49,10 @@ body {
 
 .border-color {
   border-color: rgb(var(--border-color));
+}
+
+.main-background-color {
+  background-color: rgb(var(--main-background-color));
 }
 
 .secondary-background-color {
