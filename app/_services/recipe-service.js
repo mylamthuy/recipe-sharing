@@ -14,13 +14,24 @@ import { useState } from "react";
 
 export const addDish = async (userId, dish, img) => {
   try {
-    const { title, content, category } = dish;
+    const {
+      title,
+      category,
+      timeTaken,
+      portion,
+      description,
+      ingredients,
+      instructions,
+    } = dish;
 
-    // Add imageUrl to the dish object before saving to Firestore
     const dishData = {
       title,
-      content,
       category,
+      timeTaken,
+      portion,
+      description,
+      ingredients,
+      instructions,
     };
 
     const docRef = await addDoc(
