@@ -22,8 +22,6 @@ export default function Page() {
   const [image, setImage] = useState(null);
 
   const handleCreatePost = (post) => {
-    post.dateCreated = new Date();
-    post.creator = { id: user.uid, name: user.displayName };
     addDish(user.uid, post, image);
   };
 
