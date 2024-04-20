@@ -7,6 +7,8 @@ import {
   query,
   doc,
   getDoc,
+  setDoc,
+  getCountFromServer,
 } from "firebase/firestore";
 import { storage } from "../_utils/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -14,7 +16,17 @@ import { v4 } from "uuid";
 import { useState } from "react";
 
 export const addDish = async (userId, dish, img) => {
+  console.log("userId type:" + typeof userId);
   try {
+    // Check if the userId document exists
+    const userDocRef = doc(db, "users", userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    // If the userId document doesn't exist, create it
+    if (!userDocSnap.exists()) {
+      await setDoc(userDocRef, {}); // You can set initial data here if needed
+    }
+
     const {
       title,
       category,
@@ -35,39 +47,34 @@ export const addDish = async (userId, dish, img) => {
       instructions,
     };
 
+    // Add the dish data to the "dishes" subcollection of the userId document
     const docRef = await addDoc(
       collection(db, "users", userId, "dishes"),
       dishData
     );
+
     let downloadURL = null;
     if (img == null) {
+      // Default image URL if no image provided
       downloadURL =
         "https://firebasestorage.googleapis.com/v0/b/recipe-sharing-53c0d.appspot.com/o/users%2FPremium%20Vector%20_%20Set%20of%20tasty%20breakfast%20food%20with%20colored%20doodle%20style%20on%20white.jpeg?alt=media&token=a2c561b2-f013-41da-95f5-38254207cd7c";
+
       await updateDoc(docRef, {
         imageUrl: downloadURL,
       });
     } else {
+      // Upload image and update image URL
       const userImagesRef = ref(storage, "users", "images");
       const imageName = `${img + v4() + "_" + userId + "_"}`;
       const imageRef = ref(userImagesRef, imageName);
-      console.log("imageRef: ", imageRef);
 
       await uploadBytes(imageRef, img);
       downloadURL = await getDownloadURL(imageRef);
+
       await updateDoc(docRef, {
         imageUrl: downloadURL,
       });
     }
-    // const userImagesRef = ref(storage, "users", "images");
-    // const imageName = `${img + v4() + "_" + userId + "_"}`;
-    // const imageRef = ref(userImagesRef, imageName);
-    // console.log("imageRef: ", imageRef);
-
-    // await uploadBytes(imageRef, img);
-    // downloadURL = await getDownloadURL(imageRef);
-    // await updateDoc(docRef, {
-    //   imageUrl: downloadURL,
-    // });
 
     console.log("Document written with ID: ", docRef.id);
     alert("Your recipe has been added successfully");
@@ -96,27 +103,30 @@ export const getUserPosts = async (userId) => {
 
 export const getUserID = async () => {
   try {
-    const userCollectionRef = collection(db, "users");
-    const userSnapshot = await getDocs(userCollectionRef);
-    console.log("userSnapshot: ", userSnapshot);
+    const usersCollectionRef = collection(db, "users");
+    const usersSnapshot = await getDocs(usersCollectionRef);
 
-    const userIds = userSnapshot.docs.map((userDoc) => userDoc.id);
+    const userIds = usersSnapshot.docs.map((doc) => doc.id);
     return userIds;
   } catch (error) {
-    console.error("Error in getUserID: ", error);
+    console.error("Error in getAllUserIds: ", error);
+    throw error; // Rethrow the error to handle it in the component
   }
 };
 
 export const getAllPosts = async () => {
   try {
-    const userCollectionRef = collection(db, "users");
-    const userSnapshot = await getDocs(userCollectionRef);
+    const userIDs = await getUserID();
+    const posts = [];
 
-    const userIds = userSnapshot.docs.map((userDoc) => userDoc.id);
-    //console.log("userIds: ", userIds);
-    return userIds;
+    for (const id of userIDs) {
+      const userPosts = await getUserPosts(id);
+      posts.push(...userPosts);
+    }
+
+    return posts;
   } catch (error) {
-    console.error("Error in getAllUserIds: ", error);
+    console.error("Error in getAllPosts: ", error);
     throw error; // Rethrow the error to handle it outside of this function if needed
   }
 };

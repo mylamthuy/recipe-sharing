@@ -6,32 +6,34 @@ import Heading1 from "../components/heading1";
 import PostInfo from "../components/post-info";
 import dishData from "../dishes.json";
 import { useUserAuth } from "../_utils/auth-context";
+import { getPost } from "../_services/recipe-service";
 
-export default function Page() {
+export default function Page({ params }) {
   const [post, setPost] = useState({});
 
   const recipe = dishData[0];
-  // const fetchPost = async () => {
-  //   const post = await getPost(params.id);
-  //   setPost(post);
-  // };
 
-  // useEffect(() => {
-  //   fetchPost();
-  // }, [params.id]);
-console.log(recipe);
-  if(!post) {
+  const fetchPost = async () => {
+    const post = await getPost(params.id);
+    setPost(post);
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, [params.id]);
+  console.log(recipe);
+  if (!post) {
     return (
       <div>
         <img />
         <Heading1 title="Post Not Found" />
       </div>
-    )
+    );
   }
 
   return (
     <main>
-      <PostInfo data={recipe}/>
+      <PostInfo data={recipe} />
     </main>
   );
 }

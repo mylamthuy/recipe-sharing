@@ -36,13 +36,13 @@ export default function Page() {
 
   const handleGetUserId = async () => {
     const userIDS = await getUserID();
-    console.log("User ID: ", userIDS);
+    console.log(userIDS);
   };
 
   const fetchPosts = async () => {
     if (user) {
-      const content = await getUserPosts(user.uid);
-      console.log(content);
+      const temp = await getAllPosts();
+      setPosts(temp);
     }
 
     // const userIDS = await getUserID();
@@ -56,7 +56,7 @@ export default function Page() {
 
   useEffect(() => {
     fetchPosts();
-  }, [user, posts]);
+  }, [user]);
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
@@ -94,9 +94,9 @@ export default function Page() {
             <option value="other">Other</option>
           </select>
         </div>
-        <button onClick={handleGetUserId}>Get user id</button>
 
-        {/* <DishList dishes={posts} /> */}
+        <DishList dishes={posts} />
+        {/* <button onClick={handleGetUserId}>Get user id</button> */}
       </div>
 
       {user && <NewPostButton onClick={() => setNewPostOpen(true)} />}
