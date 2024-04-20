@@ -6,6 +6,7 @@ import {
   updateDoc,
   query,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { storage } from "../_utils/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -78,36 +79,7 @@ export const addDish = async (userId, dish, img) => {
   }
 };
 
-// export const uploadImage = (userId, img) => {
-//   if (img == null) {
-//     return;
-//   }
-//   const userImagesRef = ref(storage, "users", "images");
-//   const imageName = `${img + v4() + "_" + userId}`;
-//   const imageRef = ref(userImagesRef, imageName);
-//   console.log("imageRef: ", imageRef);
-
-//   uploadBytes(imageRef, img).then(async () => {
-//     const downloadURL = await getDownloadURL(imageRef);
-//     try {
-//       const docRef = await doc(
-//         db,
-//         "users",
-//         userId,
-//         "dishes",
-//         "bAbmk2wsrxj5UZYSF6jI"
-//       );
-//       await updateDoc(docRef, {
-//         imageUrl: downloadURL,
-//       });
-//     } catch (error) {
-//       console.error("Error in uploadImage: ", error);
-//     }
-//     alert("Image uploaded successfully");
-//   });
-// };
-
-export const getDishes = async (userId) => {
+export const getUserPosts = async (userId) => {
   try {
     const docRef = collection(db, "users", userId, "dishes");
     const docSnap = await getDocs(docRef);
@@ -119,6 +91,33 @@ export const getDishes = async (userId) => {
     return mappedItems;
   } catch (error) {
     console.error("Error in getDishes: ", error);
+  }
+};
+
+export const getUserID = async () => {
+  try {
+    const userCollectionRef = collection(db, "users");
+    const userSnapshot = await getDocs(userCollectionRef);
+    console.log("userSnapshot: ", userSnapshot);
+
+    const userIds = userSnapshot.docs.map((userDoc) => userDoc.id);
+    return userIds;
+  } catch (error) {
+    console.error("Error in getUserID: ", error);
+  }
+};
+
+export const getAllPosts = async () => {
+  try {
+    const userCollectionRef = collection(db, "users");
+    const userSnapshot = await getDocs(userCollectionRef);
+
+    const userIds = userSnapshot.docs.map((userDoc) => userDoc.id);
+    //console.log("userIds: ", userIds);
+    return userIds;
+  } catch (error) {
+    console.error("Error in getAllUserIds: ", error);
+    throw error; // Rethrow the error to handle it outside of this function if needed
   }
 };
 

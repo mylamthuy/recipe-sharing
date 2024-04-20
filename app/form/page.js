@@ -29,7 +29,6 @@ export default function NewPost({ onCreatePost, onCloseForm }) {
   const [modalInstructionOpen, setModalInstructionOpen] = useState(false);
   const [instructionToEdit, setInstructionToEdit] = useState(null);
   const [image, setImage] = useState(null);
-  console.log(user.uid);
 
   const handleSubmit = (event) => {
     event.preventDefault();
