@@ -6,7 +6,7 @@ function Dish({ id, img, title, onClick }) {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
   const handleClick = () => {
-    onClick(title); // Pass the name of the dish as an argument
+    onClick(id); // Pass the name of the dish as an argument
   };
   return (
     <Link href={`/${id}`}>

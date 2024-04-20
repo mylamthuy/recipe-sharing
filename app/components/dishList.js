@@ -2,8 +2,8 @@ import React from "react";
 import Dish from "./dish";
 
 function DishList({ dishes }) {
-  const dishOnClick = (title) => {
-    alert(`Dish ${title} clicked`);
+  const dishOnClick = (id) => {
+    alert(`Dish ${id} clicked`);
   };
   const renderDishes = () => {
     return (

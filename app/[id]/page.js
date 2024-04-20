@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/header";
 import Heading1 from "../components/heading1";
 import PostInfo from "../components/post-info";
@@ -20,7 +20,7 @@ export default function Page({ params }) {
 
   useEffect(() => {
     fetchPost();
-  }, [params.id]);
+  }, []);
   console.log(recipe);
   if (!post) {
     return (
@@ -33,7 +33,7 @@ export default function Page({ params }) {
 
   return (
     <main>
-      <PostInfo data={recipe} />
+      <PostInfo data={post} />
     </main>
   );
 }

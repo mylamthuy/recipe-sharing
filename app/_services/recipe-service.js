@@ -131,6 +131,26 @@ export const getAllPosts = async () => {
   }
 };
 
+export const getPost = async (postId) => {
+  try {
+    const userIDs = await getUserID();
+
+    for (const id of userIDs) {
+      const userPosts = await getUserPosts(id);
+      const post = userPosts.find((post) => post.id === postId);
+
+      if (post) {
+        return post;
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error in getPost: ", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
 // export const addRecipe = async (userId, recipeData) => {
 //     try {
 //       const { title, content, image } = recipeData;
