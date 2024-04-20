@@ -16,7 +16,7 @@ import { v4 } from "uuid";
 import { useState } from "react";
 
 export const addDish = async (userId, dish, img) => {
-  console.log("userId type:" + typeof userId);
+  console.log(img);
   try {
     // Check if the userId document exists
     const userDocRef = doc(db, "users", userId);
@@ -64,12 +64,16 @@ export const addDish = async (userId, dish, img) => {
       });
     } else {
       // Upload image and update image URL
-      const userImagesRef = ref(storage, "users", "images");
-      const imageName = `${img + v4() + "_" + userId + "_"}`;
-      const imageRef = ref(userImagesRef, imageName);
+      const userImagesRef = ref(storage, `images/${img.name + v4()}`);
+      uploadBytes(userImagesRef, img).then(() => {
+        alert("Image uploaded successfully");
+      });
 
-      await uploadBytes(imageRef, img);
-      downloadURL = await getDownloadURL(imageRef);
+      //const imageName = `${v4() + "_" + userId + "_"}`;
+      // const imageRef = ref(userImagesRef, imageName);
+
+      // await uploadBytes(imageRef, img);
+      // downloadURL = await getDownloadURL(imageRef);
 
       await updateDoc(docRef, {
         imageUrl: downloadURL,

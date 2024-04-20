@@ -8,8 +8,12 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import IngredientModal from "./ingredientModal";
 import InstructionModal from "./instructionModal";
+import { addDish } from "../_services/recipe-service";
+import { useUserAuth } from "../_utils/auth-context";
 
 export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
+  const { user } = useUserAuth();
+
   const [postTitle, setPostTitle] = useState("");
   const [category, setCategory] = useState("");
   const [timeTaken, setTimeTaken] = useState("");
@@ -24,6 +28,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
   const [instructions, setInstructions] = useState([]);
   const [modalInstructionOpen, setModalInstructionOpen] = useState(false);
   const [instructionToEdit, setInstructionToEdit] = useState(null);
+  const [image, setImage] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -180,7 +185,30 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
       >
         <Heading1 title="ADD A NEW POST" />
         <div className="flex justify-center ">
-          <form name="new-post" className="w-3/5">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+
+              const { title, category, timeTaken, portion, description } =
+                e.target.elements;
+
+              await addDish(
+                user.uid,
+                {
+                  title: title.value,
+                  category: category.value,
+                  timeTaken: timeTaken.value,
+                  portion: portion.value,
+                  description: description.value,
+                  ingredients: ingredients,
+                  instructions: instructions,
+                },
+                image
+              );
+              title.value = "";
+              onCloseForm();
+            }}
+          >
             <div className="mb-6">
               <Label text="Post Title" />
               <input
@@ -218,7 +246,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                 className="block w-60 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
                 id="time"
-                name="time_taken"
+                name="timeTaken"
                 value={timeTaken}
                 onChange={handleTimeTakenChange}
               >
@@ -248,8 +276,18 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
             </div>
             <div className="mb-6">
               <Label text="Image" />
-              <input type="file" onChange={handleImageURLChange} />
+              <input
+                type="file"
+                onChange={(e) => {
+                  // Log the selected file object to verify
+                  console.log("Selected file:", e.target.files[0]);
+
+                  // Update state with the selected file
+                  setImage(e.target.files[0]);
+                }}
+              />
             </div>
+
             <div className="mb-6">
               <Label text="Short Description" />
               <textarea
@@ -399,7 +437,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
             <div className="flex justify-center">
               <button
                 className="w-4/5 text-lg font-roboto green-background-color text-white p-2 m-6 rounded-lg items-center justify-center hover:bg-green-800 hover:font-bold"
-                onClick={handleSubmit}
+                type="submit"
               >
                 Submit
               </button>

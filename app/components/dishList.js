@@ -9,7 +9,7 @@ function DishList({ dishes }) {
     return (
       <div className="flex flex-row flex-wrap justify-middle mt-5 mr-5">
         {dishes.map((dish) => (
-          <div key={parseInt(dish.id)} className="ml-10">
+          <div key={dish.id} className="ml-10">
             <Dish
               id={dish.id}
               img={dish.imageUrl}

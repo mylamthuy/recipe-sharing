@@ -40,23 +40,13 @@ export default function Page() {
   };
 
   const fetchPosts = async () => {
-    if (user) {
-      const temp = await getAllPosts();
-      setPosts(temp);
-    }
-
-    // const userIDS = await getUserID();
-    // console.log(userIDS);
-    // if (user) {
-    //   const posts = await getAllPosts();
-    //   //console.log(posts);
-    //   setPosts(posts);
-    // }
+    const temp = await getAllPosts();
+    setPosts(temp);
   };
 
   useEffect(() => {
     fetchPosts();
-  }, [user]);
+  }, [posts]);
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
@@ -98,6 +88,19 @@ export default function Page() {
         <DishList dishes={posts} />
         {/* <button onClick={handleGetUserId}>Get user id</button> */}
       </div>
+      {/* test */}
+      {/* <div className="mb-6">
+        <input
+          type="file"
+          onChange={(e) => {
+            // Log the selected file object to verify
+            console.log("Selected file:", e.target.files[0]);
+
+            // Update state with the selected file
+            setImage(e.target.files[0]);
+          }}
+        />
+      </div> */}
 
       {user && <NewPostButton onClick={() => setNewPostOpen(true)} />}
       {newPostOpen && (
