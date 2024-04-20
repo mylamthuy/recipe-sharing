@@ -7,7 +7,6 @@ function PostInfo({ data }) {
   return (
     <div className="flex justify-center items-center">
       <div className="border-2 border-color rounded-3xl w-11/12 my-10">
-        {/* <div className="px-6"> */}
           <div className="flex flex-col items-center justify-center h-content px-8 mb-5">
             <Heading1 title={data.title} />
             <p className="text-lg font-libre-baskerville mb-4">
@@ -34,7 +33,6 @@ function PostInfo({ data }) {
                 ) : (
                   <p className="text-color">No steps provided</p>
                 )}
-              </div>
             </div>
             <div className="col-span-1">
               <div className="border-2 border-color rounded-3xl p-8 secondary-background-color ">
@@ -50,7 +48,7 @@ function PostInfo({ data }) {
                 )}
               </div>
             </div>
-        {/* </div> */}
+            </div>
       </div>
     </div>
   );
