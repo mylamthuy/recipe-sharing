@@ -1,29 +1,58 @@
 [
     {
         "id": "0001",
-        "name": "Kimchi Soup",
+        "title": "Kimchi Soup",
         "category": "korean",
-        "cookingTime": "1 hour",
-        "serving": "4",
-        "image": "https://firebasestorage.googleapis.com/v0/b/recipe-sharing-53c0d.appspot.com/o/users%2FScreenshot%202023-02-28%20214845.png4310072d-a8cd-411d-a91e-4f6230945181_clcCBUNbXMVQ1t0VpYzLMq9oeQv2?alt=media&token=a3471de4-7f12-476c-9c8e-836f8479075a",
+        "timeTaken": "1 hour",
+        "portion": "4",
+        "image": "./images/not-found.jpg",
+        "description": "Kimchi soup is a traditional Korean dish made with kimchi, tofu, pork, and assorted vegetables. It is a popular comfort food in Korea and is often served as a main course. The soup is spicy, tangy, and full of flavor, making it the perfect dish for a cold winter day. In this recipe, we will show you how to make kimchi soup at home using simple ingredients that you can find at your local grocery store. So grab your apron and get ready to cook up a delicious bowl of kimchi soup!",
         "ingredients": [
-          "Kimchi",
-          "Tofu",
-          "Pork",
-          "Onion",
-          "Garlic",
-          "Soy Sauce",
-          "Sesame Oil"
+            "Kimchi",
+            "Tofu",
+            "Pork",
+            "Onion",
+            "Garlic",
+            "Soy Sauce",
+            "Sesame Oil"
         ],
-        "steps": [
-          "Prepare ingredients",
-          "Heat pot and sauté onion and garlic",
-          "Add pork and cook until browned",
-          "Add kimchi and cook for a few minutes",
-          "Add water and bring to a boil",
-          "Add tofu and simmer for 10 minutes",
-          "Season with soy sauce and sesame oil",
-          "Serve hot"
+        "instructions": [
+            {
+                "step": "Step 1: Prepare ingredients",
+                "description": "Gather all the ingredients and chop the onion, garlic, and pork"
+            },
+            {
+                "step": "Step 2: Cut tofu into cubes",
+                "description": "Cut the tofu into small cubes and set aside"
+            },
+            {
+                "step": "Step 3: Heat pot and sauté onion and garlic",
+                "description": "Heat a pot over medium heat and sauté the onion and garlic until fragrant"
+            },
+            {
+                "step": "Step 4: Add pork and cook until browned",
+                "description": "Add the pork to the pot and cook until browned"
+            },
+            {
+                "step": "Step 5: Add kimchi and cook for a few minutes",
+                "description": "Add the kimchi to the pot and cook for a few minutes until fragrant"
+            },
+            {
+                "step": "Step 6: Add water and bring to a boil",
+                "description": "Add water to the pot and bring to a boil"
+            },
+            {
+                "step": "Step 7: Add tofu and simmer for 10 minutes",
+                "description": "Add the tofu to the pot and simmer for 10 minutes"
+            },
+            {
+                "step": "Step 8: Season with soy sauce and sesame oil",
+                "description": "Season the soup with soy sauce and sesame oil to taste"
+            },
+            {
+                "step": "Step 9: Serve hot",
+                "description": "Serve the kimchi soup hot with a side of rice or noodles"
+            }
         ]
     },
     {
@@ -74,5 +103,4 @@
         "category": "korean",
         "image": "https://reactnative.dev/img/tiny_logo.png"
     }
-
 ]

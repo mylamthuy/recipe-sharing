@@ -3,53 +3,35 @@ import React from "react";
 import { useState } from "react";
 import Header from "../components/header";
 import Heading1 from "../components/heading1";
-import Info from "../components/info";
+import PostInfo from "../components/post-info";
 import dishData from "../dishes.json";
 import { useUserAuth } from "../_utils/auth-context";
 
 export default function Page() {
-  const { user } = useUserAuth();
-  const [dishes, setDishes] = useState(dishData);
-  if (!user) {
+  const [post, setPost] = useState({});
+
+  const recipe = dishData[0];
+  // const fetchPost = async () => {
+  //   const post = await getPost(params.id);
+  //   setPost(post);
+  // };
+
+  // useEffect(() => {
+  //   fetchPost();
+  // }, [params.id]);
+console.log(recipe);
+  if(!post) {
     return (
       <div>
-        <div>
-          <Header />
-        </div>
-        <div className="flex justify-center items-center h-content">
-          <div className="w-full min-h-full border-2 border-color rounded-3xl p-8 mb-8 mx-8">
-            <Heading1 title="Please sign in to view the content" />
-          </div>
-        </div>
+        <img />
+        <Heading1 title="Post Not Found" />
       </div>
-    );
+    )
   }
+
   return (
     <main>
-      <h1>New post</h1>
+      <PostInfo data={recipe}/>
     </main>
   );
-
-  // const firstDish = dishes[0];
-  // console.log(firstDish);
-  // return (
-  //   <div>
-  //     <div>
-  //       <Header />
-  //     </div>
-  //     <div className="flex justify-center items-center h-content">
-  //       <div className="w-full min-h-full border-2 border-color rounded-3xl p-8 mb-8 mx-8">
-  //         <Heading1 title={firstDish.name} />
-  //         <Info
-  //           category={firstDish.category}
-  //           cookingTime={firstDish.cookingTime}
-  //           serving={firstDish.serving}
-  //           img={firstDish.image}
-  //           ingredients={firstDish.ingredients}
-  //           steps={firstDish.steps}
-  //         />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 }
