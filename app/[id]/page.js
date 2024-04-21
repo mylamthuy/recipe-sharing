@@ -23,7 +23,7 @@ export default function Page({ params }) {
   if (!post) {
     return (
       <div className="flex justify-center items-center ml-8 mt-12">
-        <h1 className="text-2xl">"Post Not Found"</h1>
+        <h1 className="text-2xl">Post Not Found</h1>
       </div>
     );
   }
