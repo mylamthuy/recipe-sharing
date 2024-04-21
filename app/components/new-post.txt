@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { nanoid } from "nanoid";
 import Heading1 from "./heading1";
 import Label from "./label";
 import { RiEdit2Fill } from "react-icons/ri";
@@ -13,33 +14,69 @@ import { useUserAuth } from "../_utils/auth-context";
 export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
   const { user } = useUserAuth();
 
-    const postTitleRef = useRef("");
-    const categoryRef = useRef("");
-    const timeTakenRef = useRef("");
-    const portionRef = useRef("");
-    const descriptionRef = useRef("");
-    const ingredientRef = useRef("");
-    const stepTitleRef = useRef("");
-    const instructionDescRef = useRef("");
-    const [ingredients, setIngredients] = useState([]);
-    const [modalIngredientOpen, setModalIngredientOpen] = useState(false);
-    const [editIngredientId, setEditIngredientId] = useState(null);
-    const [instructions, setInstructions] = useState([]);
-    const [modalInstructionOpen, setModalInstructionOpen] = useState(false);
-    const [instructionToEdit, setInstructionToEdit] = useState(null);
-    const [image, setImage] = useState(null);
-    const [ingreError, setIngreError] = useState("");
-    const [instrError, setInstrError] = useState("");
+  const [postTitle, setPostTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [timeTaken, setTimeTaken] = useState("");
+  const [portion, setPortion] = useState("2");
+  const [description, setDescription] = useState("");
+  const [ingredientInput, setIngredientInput] = useState("");
+  const [ingredients, setIngredients] = useState([]);
+  const [modalIngredientOpen, setModalIngredientOpen] = useState(false);
+  const [editIngredientId, setEditIngredientId] = useState(null);
+  const [instructionStep, setInstructionStep] = useState("");
+  const [instructionDescription, setInstructionDescription] = useState("");
+  const [instructions, setInstructions] = useState([]);
+  const [modalInstructionOpen, setModalInstructionOpen] = useState(false);
+  const [instructionToEdit, setInstructionToEdit] = useState(null);
+  const [image, setImage] = useState(null);
+  const [ingreError, setIngreError] = useState("");
+  const [instrError, setInstrError] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newPost = {
+      title: postTitle,
+      category: category,
+      timeTaken: timeTaken,
+      portion: portion,
+      description: description,
+      ingredients: ingredients,
+      instructions: instructions,
+    };
+    onCreatePost(newPost);
+    onCloseForm();
+  };
+
+  const handlePostTitleChange = (event) => {
+    setPostTitle(event.target.value);
+  };
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
+
+  const handleTimeTakenChange = (event) => {
+    setTimeTaken(event.target.value);
+  };
+
+  const handlePortionChange = (event) => {
+    setPortion(event.target.value);
+  };
+
+  const handleDescritionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleImageURLChange = (event) => {
+    onSetImage(event.target.value);
+  };
 
   // Ingredient functions
-  
   const handleAddIngredient = (e) => {
-    const ingredientInput = ingredientRef.current.value;
     if (ingredientInput.trim() !== "") {
       e.preventDefault();
-      setIngreError("");
       setIngredients([...ingredients, ingredientInput.trim()]);
-      ingredientRef.current.value = ""; // Clear input field after adding ingredient
+      setIngredientInput(""); // Clear input field after adding ingredient
     } else {
       e.preventDefault(); // Prevent form submission if ingredient input is empty
     }
@@ -78,12 +115,9 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
   // Instruction functions
   const handleAddInstruction = (e) => {
     e.preventDefault();
-    const instructionStep = stepTitleRef.current.value;
-    const instructionDescription = instructionDescRef.current.value;
     if (instructionStep.trim() !== "" && instructionDescription.trim() !== "") {
       console.log("step:", instructionStep);
       console.log("description:", instructionDescription);
-      setInstrError("");
       setInstructions([
         ...instructions,
         {
@@ -92,8 +126,8 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
         },
       ]);
       console.log("instructions:", instructions);
-      stepTitleRef.current.value = "";
-      instructionDescRef.current.value = "";
+      setInstructionStep("");
+      setInstructionDescription("");
     }
   };
 
@@ -178,24 +212,17 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               await addDish(
                 user.uid,
                 {
-                  title: postTitleRef.current.value,
-                  category: categoryRef.current.value,
-                  timeTaken: timeTakenRef.current.value,
-                  portion: portionRef.current.value,
-                  description: descriptionRef.current.value,
+                  title: title.value,
+                  category: category.value,
+                  timeTaken: timeTaken.value,
+                  portion: portion.value,
+                  description: description.value,
                   ingredients: ingredients,
                   instructions: instructions,
                 },
                 image
               );
-                postTitleRef.current.value = "";
-                categoryRef.current.value = "";
-                timeTakenRef.current.value = "";
-                portionRef.current.value = "";
-                descriptionRef.current.value = "";
-                ingredientRef.current.value = "";
-                stepTitleRef.current.value = "";
-                instructionDescRef.current.value = "";
+              title.value = "";
               onCloseForm();
             }}
           >
@@ -204,11 +231,12 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <input
                 className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
-                ref={postTitleRef}
+                value={postTitle}
                 id="title"
-                name="post-title"
+                name="post_title"
                 type="text"
                 placeholder="Enter a title for your post"
+                onChange={handlePostTitleChange}
               />
             </div>
             <div className="mb-6">
@@ -216,9 +244,10 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <select
                 className="block w-60 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
-                ref={categoryRef}
                 id="category"
                 name="category"
+                value={category}
+                onChange={handleCategoryChange}
               >
                 <option value="">Select a category</option>
                 {categoryOptions.map((category) => (
@@ -233,9 +262,10 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <select
                 className="block w-60 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
-                ref={timeTakenRef}
-                id="timeTaken"
+                id="time"
                 name="timeTaken"
+                value={timeTaken}
+                onChange={handleTimeTakenChange}
               >
                 <option value="">Select cooking time</option>
                 {timeTakenOptions.map((time) => (
@@ -250,9 +280,10 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <select
                 className="block w-60 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
-                ref={portionRef}
                 id="portion"
                 name="portion"
+                value={portion}
+                onChange={handlePortionChange}
               >
                 {portionOptions.map((portion) => (
                   <option key={portion} value={portion}>
@@ -280,11 +311,12 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <Label text="Short Description" />
               <textarea
                 className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
-                ref={descriptionRef}
                 id="description"
                 name="short-description"
                 rows="3"
                 placeholder="Enter a short description for your post"
+                value={description}
+                onChange={handleDescritionChange}
               ></textarea>
             </div>
 
@@ -293,11 +325,12 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <div className="flex">
                 <input
                   className="flex-1 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 mr-6 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
-                  ref={ingredientRef}
                   id="ingredient"
                   name="ingredients"
                   type="text"
+                  value={ingredientInput}
                   placeholder="Add an ingredient"
+                  onChange={(e) => setIngredientInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
                 
@@ -353,10 +386,11 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                 <label className="text-lg content-color ml-2">Step Title</label>
                 <input
                   className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
-                  ref={stepTitleRef}
+                  value={instructionStep}
                   name="step_title"
                   type="text"
                   placeholder="Add step title. Example: Step 1: Preheat and prepare"
+                  onChange={(e) => setInstructionStep(e.target.value)}
                 />
               </div>
               <div>
@@ -365,10 +399,11 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                 </label>
                 <textarea
                   className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
-                  ref={instructionDescRef}
+                  value={instructionDescription}
                   name="step_instruction"
                   rows="6"
                   placeholder="Enter instructions for this step. Example: Preheat oven to 180 degrees Celsius. Prepare baking tray."
+                  onChange={(e) => setInstructionDescription(e.target.value)}
                 ></textarea>
               </div>
               {instrError && <p className="text-red-600 text-sm font-roboto">{instrError}</p>}

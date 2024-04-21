@@ -27,7 +27,7 @@ export default function CustomModal ({closeModal, onSave, defaultValue}) {
                     <textarea
                         className="w-3/4 min-w-80 p-2 block mt-4 mb-4 content-color font-roboto text-base rounded-lg secondary-background-color border border-color focus:border-2 focus:outline-none"
                         rows='3'
-                        name="ingredient"
+                        name="bio"
                         value={editedItem}
                         onChange={handleChange}
                     >

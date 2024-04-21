@@ -22,44 +22,58 @@ export default function Page() {
   const [posts, setPosts] = useState([]);
   const [newPostOpen, setNewPostOpen] = useState(false);
 
-  const [dishes, setDishes] = useState([]);
   const [filter, setFilter] = useState("all");
-  const [image, setImage] = useState(null);
-
-  const handleCreatePost = (post) => {
-    addDish(user.uid, post, image);
-  };
-
-  const handleCloseNewPost = () => {
-    setNewPostOpen(false);
-  };
-
-  const handleGetUserId = async () => {
-    const userIDS = await getUserID();
-    console.log(userIDS);
-  };
+  //const [image, setImage] = useState(null);
 
   const fetchPosts = async () => {
     const temp = await getAllPosts();
     setPosts(temp);
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, [posts]);
+   useEffect(() => {
+  //   fetchPosts();
+     console.log("use Effect executed");
+   }, [posts]);
+
+  // const handleCreatePost = (post) => {
+  //   addDish(user.uid, post, image);
+  // };
+
+  const handleCloseNewPost = () => {
+    setNewPostOpen(false);
+  };
+
+  // const handleFilterChange = (e) => {
+  //   setFilter(e.target.value);
+  //   if (e.target.value === "all") {
+  //     setPosts(posts);
+  //     fetchPosts();
+  //   } else {
+  //     const filteredPosts = posts.filter(
+  //       (post) => {post.category.toLowerCase() === e.target.value
+  //                 console.log("post category: ", post.category.toLowerCase())
+  //               console.log("post: ", post)}
+  //     );
+  //     setPosts(filteredPosts);
+  //     fetchPosts();
+  //   }
+  // };
 
   const handleFilterChange = (e) => {
-    setFilter(e.target.value);
-    if (e.target.value === "all") {
-      setPosts(posts);
-      fetchPosts();
+    const selectedFilter = e.target.value;
+    
+    if (selectedFilter === "all") {
+      fetchPosts(); // Fetch all posts again
     } else {
-      const filteredPosts = posts.filter(
-        (post) => post.category === e.target.value
-      );
+      // Filter posts based on the selected category
+      const filteredPosts = posts.filter(post => post.category.toLowerCase() === selectedFilter);
       setPosts(filteredPosts);
     }
+    
+    // Update the filter state
+    setFilter(selectedFilter);
   };
+  console.log("Render - Post: ", posts);
 
   return (
     <main>
@@ -68,7 +82,7 @@ export default function Page() {
         
       </div>
       <div className="w-full flex justify-center items-center mb-10">
-          <img class="h-52 w-full object-cover mx-auto" 
+          <img className="h-52 w-full object-cover mx-auto" 
               src="https://firebasestorage.googleapis.com/v0/b/test-24f28.appspot.com/o/images%2Fmain-quote.png?alt=media&token=73342f89-d680-42d2-af8e-04884549ef46" />
       </div>
       <div>
@@ -111,9 +125,9 @@ export default function Page() {
       {user && <NewPostButton onClick={() => setNewPostOpen(true)} />}
       {newPostOpen && (
         <NewPost
-          onCreatePost={handleCreatePost}
+          //onCreatePost={handleCreatePost}
           onCloseForm={handleCloseNewPost}
-          onSetImage={setImage}
+          //onSetImage={setImage}
         />
       )}
     </main>

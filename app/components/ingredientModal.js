@@ -1,17 +1,23 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 
 export default function IngredientModal ({closeModal, onSave, defaultValue}) {
-    const [editedIngredient, setEditedIngredient] = useState(defaultValue || "");
+    //const [editedIngredient, setEditedIngredient] = useState(defaultValue || "");
+    const editIngredientRef = useRef(defaultValue || "");
     const [error, setError] = useState("");
 
-    const handleChange = (e) => {
-        setEditedIngredient(e.target.value);
-        setError("");
-    };
+    // const handleChange = (e) => {
+    //     setEditedIngredient(e.target.value);
+    //     setError("");
+    // };
+
+    useEffect(() => {
+        // Set the initial value of the input element when defaultValue changes
+        editIngredientRef.current.value = defaultValue || "";
+      }, [defaultValue]);
     
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        const editedIngredient = editIngredientRef.current.value;
         if (editedIngredient.trim() === "") {
             setError("Please fill in the ingredient !!");
         } else {
@@ -34,8 +40,9 @@ export default function IngredientModal ({closeModal, onSave, defaultValue}) {
                     <input
                         className="w-11/12 p-2 block mt-4 mb-2 content-color font-roboto text-base rounded-lg secondary-background-color border border-color focus:border-2 focus:outline-none"
                         name="ingredient"
-                        value={editedIngredient}
-                        onChange={handleChange}
+                        ref={editIngredientRef}
+                        //value={editedIngredient}
+                        //onChange={handleChange}
                     >
                     </input>
                     {error && <p className="text-red-600 text-sm font-roboto mb-4">{error}</p>}

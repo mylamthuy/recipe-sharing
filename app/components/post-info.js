@@ -10,20 +10,21 @@ function PostInfo({ data }) {
         <div className="flex flex-col items-center justify-center h-content px-8 mb-5">
           <Heading1 title={data.title} />
           <p className="text-lg font-libre-baskerville mb-4">
-            {data.category} FOOD · {data.timeTaken} · {data.portion} SERVINGS
+            {data.category} Food · {data.timeTaken} · {data.portion} Servings
           </p>
           <div className="flex justify-center items-center">
             <img
               src={data.imageUrl}
               alt="dish"
-              className="w-60 h-60 rounded-lg mb-4"
+              //className="w-60 h-60 rounded-lg mb-4"
+              class="h-1/5 w-1/2 object-scale-down"
             />
           </div>
-          <p className="indent-6 text-justify">{data.description}</p>
+          <p className="indent-6 text-justify text-lg font-roboto my-4">{data.description}</p>
         </div>
 
-        <div className="grid grid-cols-4 px-8">
-          <div className="col-span-3 col-start-1">
+        <div className="grid grid-cols-6 px-6">
+          <div className="col-span-4 col-start-1 mr-4">
             <Heading2 title="Instructions" />
             {Array.isArray(data.instructions) &&
             data.instructions.length > 0 ? (
@@ -41,14 +42,14 @@ function PostInfo({ data }) {
               <p className="text-color">No steps provided</p>
             )}
           </div>
-          <div className="col-span-1">
+          <div className="col-span-2">
             <div className="border-2 border-color rounded-3xl p-8 secondary-background-color mb-3">
               <h3 className="text-lg font-bold font-roboto mb-2 title-color">
                 INGREDIENTS
               </h3>
               {Array.isArray(data.ingredients) &&
               data.ingredients.length > 0 ? (
-                <ul className="text-lg text-color">
+                <ul className="text-color">
                   {data.ingredients.map((ingredient, index) => (
                     <li key={index}>· {ingredient}</li>
                   ))}
