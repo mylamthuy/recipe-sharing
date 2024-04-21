@@ -64,7 +64,7 @@ export default function Profile() {
             <img
               src={user.photoURL}
               alt="profile image"
-              className="w-24 h-24"
+              className="w-20 h-20"
             />
           </div>
           <div className="col-span-2 col-start-2">
@@ -89,7 +89,7 @@ export default function Profile() {
           />
         )} */}
       </div>
-      <div className="mt-6 mb-4 mx-4">
+      <div className="mt-10 mb-4 mx-4">
         <DishList dishes={posts} />
       </div>
     </div>
