@@ -1,11 +1,8 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import Header from "../components/header";
-import Heading1 from "../components/heading1";
 import PostInfo from "../components/post-info";
 import dishData from "../dishes.json";
-import { useUserAuth } from "../_utils/auth-context";
 import { getPost } from "../_services/recipe-service";
 
 export default function Page({ params }) {
@@ -20,7 +17,8 @@ export default function Page({ params }) {
 
   useEffect(() => {
     fetchPost();
-  }, []);
+  }, [params.id]);
+
   console.log(recipe);
   if (!post) {
     return (

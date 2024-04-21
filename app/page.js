@@ -65,9 +65,15 @@ export default function Page() {
     <main>
       <div>
         <Header />
+        
+      </div>
+      <div className="w-full flex justify-center items-center mb-10">
+          <img class="h-52 w-full object-cover mx-auto" 
+              src="https://firebasestorage.googleapis.com/v0/b/test-24f28.appspot.com/o/images%2Fmain-quote.png?alt=media&token=73342f89-d680-42d2-af8e-04884549ef46" />
       </div>
       <div>
-        <div className="text-right mr-5">
+        
+        <div className="text-right mr-10">
           <select
             className="border border-gray-300 rounded-md px-2 py-1"
             value={filter}
