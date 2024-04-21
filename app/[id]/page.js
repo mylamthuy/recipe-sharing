@@ -24,9 +24,8 @@ export default function Page({ params }) {
   console.log(recipe);
   if (!post) {
     return (
-      <div>
-        <img />
-        <Heading1 title="Post Not Found" />
+      <div className="flex justify-center items-center ml-8 mt-12">
+        <h1 className="text-2xl">"Post Not Found"</h1>
       </div>
     );
   }

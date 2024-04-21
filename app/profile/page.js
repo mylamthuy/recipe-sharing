@@ -46,8 +46,8 @@ export default function Profile() {
         <div>
           <Header />
         </div>
-        <div className="flex justify-start items-center ml-8 mt-">
-          <h2>Sign in to view your profile</h2>
+        <div className="flex justify-start items-center ml-8 mt-2">
+          <h2 className="text-lg font-roboto">Sign in to view your profile</h2>
         </div>
       </div>
     );
