@@ -65,15 +65,15 @@ export const addDish = async (userId, dish, img) => {
     } else {
       // Upload image and update image URL
       const userImagesRef = ref(storage, `images/${img.name + v4()}`);
-      uploadBytes(userImagesRef, img).then(() => {
-        alert("Image uploaded successfully");
-      });
+      // uploadBytes(userImagesRef, img).then(() => {
+      //   alert("Image uploaded successfully");
+      // });
 
-      //const imageName = `${v4() + "_" + userId + "_"}`;
-      // const imageRef = ref(userImagesRef, imageName);
+      const imageName = `${v4() + "_" + userId + "_"}`;
+      const imageRef = ref(userImagesRef, imageName);
 
-      // await uploadBytes(imageRef, img);
-      // downloadURL = await getDownloadURL(imageRef);
+      await uploadBytes(imageRef, img);
+      downloadURL = await getDownloadURL(imageRef);
 
       await updateDoc(docRef, {
         imageUrl: downloadURL,

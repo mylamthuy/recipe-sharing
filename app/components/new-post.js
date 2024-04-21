@@ -17,7 +17,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
   const [postTitle, setPostTitle] = useState("");
   const [category, setCategory] = useState("");
   const [timeTaken, setTimeTaken] = useState("");
-  const [portion, setPortion] = useState("");
+  const [portion, setPortion] = useState("2");
   const [description, setDescription] = useState("");
   const [ingredientInput, setIngredientInput] = useState("");
   const [ingredients, setIngredients] = useState([]);
@@ -29,6 +29,8 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
   const [modalInstructionOpen, setModalInstructionOpen] = useState(false);
   const [instructionToEdit, setInstructionToEdit] = useState(null);
   const [image, setImage] = useState(null);
+  const [ingreError, setIngreError] = useState("");
+  const [instrError, setInstrError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -71,9 +73,13 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
 
   // Ingredient functions
   const handleAddIngredient = (e) => {
-    e.preventDefault();
-    setIngredients([...ingredients, ingredientInput.trim()]);
-    setIngredientInput(""); // Clear input field after adding ingredient
+    if (ingredientInput.trim() !== "") {
+      e.preventDefault();
+      setIngredients([...ingredients, ingredientInput.trim()]);
+      setIngredientInput(""); // Clear input field after adding ingredient
+    } else {
+      e.preventDefault(); // Prevent form submission if ingredient input is empty
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -184,10 +190,21 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
         }}
       >
         <Heading1 title="ADD A NEW POST" />
-        <div className="flex justify-center ">
+        <div className="flex justify-center">
           <form
+          className="w-4/5"
             onSubmit={async (e) => {
               e.preventDefault();
+
+              if (ingredients.length === 0) {
+                setIngreError("Please add ingredients for the recipe !!")
+                return;
+              }
+
+              if (instructions.length === 0) {
+                setInstrError("Please add instructions for the recipe !!")
+                return;
+              }
 
               const { title, category, timeTaken, portion, description } =
                 e.target.elements;
@@ -212,7 +229,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
             <div className="mb-6">
               <Label text="Post Title" />
               <input
-                className="block w-full content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
+                className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
                 value={postTitle}
                 id="title"
@@ -241,7 +258,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               </select>
             </div>
             <div className="mb-6">
-              <Label text="Time Taken" />
+              <Label text="Cooking Time" />
               <select
                 className="block w-60 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
@@ -250,6 +267,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                 value={timeTaken}
                 onChange={handleTimeTakenChange}
               >
+                <option value="">Select cooking time</option>
                 {timeTakenOptions.map((time) => (
                   <option key={time} value={time}>
                     {time}
@@ -258,9 +276,9 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               </select>
             </div>
             <div className="mb-6">
-              <Label text="Portion" />
+              <Label text="Serving" />
               <select
-                className="block w-1/5 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
+                className="block w-60 content-color font-roboto text-base rounded-lg py-2 px-2 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 required
                 id="portion"
                 name="portion"
@@ -277,6 +295,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
             <div className="mb-6">
               <Label text="Image" />
               <input
+                className="mt-2"
                 type="file"
                 onChange={(e) => {
                   // Log the selected file object to verify
@@ -291,7 +310,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
             <div className="mb-6">
               <Label text="Short Description" />
               <textarea
-                className="block w-full content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
+                className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                 id="description"
                 name="short-description"
                 rows="3"
@@ -301,9 +320,9 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               ></textarea>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-6 w-4/5">
               <Label text="Ingredients" />
-              <div className="flex w-3/5">
+              <div className="flex">
                 <input
                   className="flex-1 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 mr-6 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                   id="ingredient"
@@ -314,13 +333,16 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                   onChange={(e) => setIngredientInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
+                
                 <button
-                  className=" w-16 font-bold font-roboto text-white green-background-color mt-2 mb-4 border border-color rounded-md py-1 focus:outline-none hover:bg-green-800"
+                  className="min-w-16 font-bold font-roboto text-white green-background-color mt-2 mb-4 border border-color rounded-md py-1 focus:outline-none hover:bg-green-800"
                   onClick={handleAddIngredient}
                 >
                   Add
                 </button>
+                
               </div>
+              {ingreError && <p className="text-red-600 text-sm font-roboto">{ingreError}</p>}
               <ul>
                 {ingredients.map((ingredient, index) => (
                   <li
@@ -363,7 +385,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
               <div>
                 <label className="text-lg content-color ml-2">Step Title</label>
                 <input
-                  className="block w-full content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
+                  className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                   value={instructionStep}
                   name="step_title"
                   type="text"
@@ -376,7 +398,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                   Step Instruction
                 </label>
                 <textarea
-                  className="block w-full content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
+                  className="block w-full min-w-60 content-color font-roboto text-base rounded-lg py-2 px-4 mt-2 mb-4 secondary-background-color border border-color focus:outline-none focus:shadow-inner"
                   value={instructionDescription}
                   name="step_instruction"
                   rows="6"
@@ -384,9 +406,10 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                   onChange={(e) => setInstructionDescription(e.target.value)}
                 ></textarea>
               </div>
+              {instrError && <p className="text-red-600 text-sm font-roboto">{instrError}</p>}
               <div className="flex justify-center">
                 <button
-                  className="block w-1/4 font-bold font-roboto text-white green-background-color mt-2 mb-6 border border-color rounded-md py-2 focus:outline-none hover:bg-green-800"
+                  className="block w-1/4 min-w-32 font-bold font-roboto text-white green-background-color mt-2 mb-6 border border-color rounded-md py-2 focus:outline-none hover:bg-green-800"
                   onClick={handleAddInstruction}
                 >
                   Add

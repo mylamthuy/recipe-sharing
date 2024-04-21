@@ -42,7 +42,7 @@ function PostInfo({ data }) {
             )}
           </div>
           <div className="col-span-1">
-            <div className="border-2 border-color rounded-3xl p-8 secondary-background-color ">
+            <div className="border-2 border-color rounded-3xl p-8 secondary-background-color mb-3">
               <h3 className="text-lg font-bold font-roboto mb-2 title-color">
                 INGREDIENTS
               </h3>

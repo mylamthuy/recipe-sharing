@@ -23,7 +23,7 @@ function Header() {
   }
 
   return (
-    <header className="flex mx-6 mt-3 mb-10 p-2">
+    <header className="flex mx-6 mt-4 mb-10 p-2">
       <div className="flex-auto w-3/5 title-color font-libre-baskerville text-2xl">
         <Link href="/">Kitchen Diary</Link>
       </div>
@@ -36,7 +36,7 @@ function Header() {
               className="mr-2 w-8 h-8"
             />
           )}
-          <span>{user ? user.displayName : `Customer`}</span>
+          <span>{user ? user.displayName : ""}</span>
         </Link>
       </div>
       <div className="flex-auto w-1/6">

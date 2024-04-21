@@ -3,7 +3,7 @@ import Dish from "./dish";
 
 function DishList({ dishes }) {
   const dishOnClick = (id) => {
-    alert(`Dish ${id} clicked`);
+    // alert(`Dish ${id} clicked`);
   };
   const renderDishes = () => {
     return (
