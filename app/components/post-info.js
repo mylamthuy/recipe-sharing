@@ -17,7 +17,7 @@ function PostInfo({ data }) {
               src={data.imageUrl}
               alt="dish"
               //className="w-60 h-60 rounded-lg mb-4"
-              class="h-1/5 w-1/2 object-scale-down"
+              className="h-1/5 w-1/2 object-scale-down"
             />
           </div>
           <p className="indent-6 text-justify text-lg font-roboto my-4">{data.description}</p>

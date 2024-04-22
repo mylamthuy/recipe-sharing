@@ -13,23 +13,27 @@ export default function Profile() {
   const [posts, setPosts] = useState([]);
   const [count, setCount] = useState();
 
-
-
   useEffect(() => {
-    const fetchPosts = async () => {
-      if (user) {
-        try {
-          const temp = await getUserPosts(user.uid);
-          setPosts(temp);
-          setCount(temp.length);
-        } catch (error) {
-          console.error("Error fetching posts:", error);
-        }
-      }
-    };
+    const unsubscribe = getUserPosts(user.uid, setPosts);
+    return () => unsubscribe();
+  }, []);
 
-    fetchPosts();
-  }, [user, posts]); // Include 'user' in the dependency array so useEffect runs when 'user' changes
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     if (user) {
+  //       try {
+  //         const temp = await getUserPosts(user.uid);
+  //         setPosts(temp);
+  //         setCount(temp.length);
+  //       } catch (error) {
+  //         console.error("Error fetching posts:", error);
+  //       }
+  //     }
+  //   };
+
+  //   fetchPosts();
+  // }, [user, posts]); 
+  // Include 'user' in the dependency array so useEffect runs when 'user' changes
 
   // useEffect(() => {
   //   console.log(posts); // Log the updated value of posts
@@ -70,7 +74,7 @@ export default function Profile() {
           <div className="col-span-2 col-start-2">
             <h2 className="font-libre-baskerville text-lg">{user.displayName}</h2>
             <p className="text-base">
-              Your have {count} {count == 1 ? "posting" : "postings"}
+              Your have {posts.length} {posts.length == 1 ? "posting" : "postings"}
             </p>
           </div>
         </div>

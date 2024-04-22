@@ -22,18 +22,37 @@ export default function Page() {
   const [posts, setPosts] = useState([]);
   const [newPostOpen, setNewPostOpen] = useState(false);
 
-  const [filter, setFilter] = useState("all");
+  //const [filter, setFilter] = useState("all");
   //const [image, setImage] = useState(null);
 
-  const fetchPosts = async () => {
-    const temp = await getAllPosts();
-    setPosts(temp);
-  };
+  // const fetchPosts = async () => {
+  //   const temp = await getAllPosts();
+  //   setPosts(temp);
+  // };
 
    useEffect(() => {
-  //   fetchPosts();
      console.log("use Effect executed");
-   }, [posts]);
+     const unsubscribe = getAllPosts(setPosts);
+     return () => unsubscribe();
+   }, []);
+
+  //  useEffect(() => {
+  //     const filterPost = () => {
+  //       if (filter === "all") {
+  //         setPosts(posts);
+  //       } else {
+  //         const filteredPosts = posts.filter(
+  //           (post) => post.category.toLowerCase() === filter
+  //         );
+  //         setPosts(filteredPosts);
+  //       }
+  //     };
+  //     filterPost();
+  //   }, [filter]);
+
+    // const handleFilterChange = (e) => {
+    //   setFilter(e.target.value);
+    // };
 
   // const handleCreatePost = (post) => {
   //   addDish(user.uid, post, image);
@@ -45,34 +64,27 @@ export default function Page() {
 
   // const handleFilterChange = (e) => {
   //   setFilter(e.target.value);
-  //   if (e.target.value === "all") {
-  //     setPosts(posts);
-  //     fetchPosts();
-  //   } else {
-  //     const filteredPosts = posts.filter(
-  //       (post) => {post.category.toLowerCase() === e.target.value
-  //                 console.log("post category: ", post.category.toLowerCase())
-  //               console.log("post: ", post)}
-  //     );
-  //     setPosts(filteredPosts);
-  //     fetchPosts();
-  //   }
   // };
 
-  const handleFilterChange = (e) => {
-    const selectedFilter = e.target.value;
+  //const filteredPosts = filter === "all" ? posts : posts.filter(post => post.category.toLowerCase() === filter);
+
+
+
+  // const handleFilterChange = (e) => {
+  //   const selectedFilter = e.target.value;
     
-    if (selectedFilter === "all") {
-      fetchPosts(); // Fetch all posts again
-    } else {
-      // Filter posts based on the selected category
-      const filteredPosts = posts.filter(post => post.category.toLowerCase() === selectedFilter);
-      setPosts(filteredPosts);
-    }
+  //   if (selectedFilter === "all") {
+  //     setPosts(posts); // Fetch all posts again
+  //   } else {
+  //     // Filter posts based on the selected category
+  //     const filteredPosts = posts.filter(post => post.category.toLowerCase() === selectedFilter);
+  //     setPosts(filteredPosts);
+  //   }
     
-    // Update the filter state
-    setFilter(selectedFilter);
-  };
+  //   // Update the filter state
+  //   setFilter(selectedFilter);
+  // };
+
   console.log("Render - Post: ", posts);
 
   return (
@@ -87,7 +99,7 @@ export default function Page() {
       </div>
       <div>
         
-        <div className="text-right mr-10">
+        {/* <div className="text-right mr-10">
           <select
             className="border border-gray-300 rounded-md px-2 py-1"
             value={filter}
@@ -103,7 +115,7 @@ export default function Page() {
             <option value="european">European</option>
             <option value="other">Other</option>
           </select>
-        </div>
+        </div> */}
 
         <DishList dishes={posts} />
         {/* <button onClick={handleGetUserId}>Get user id</button> */}

@@ -8,6 +8,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  onSnapshot,
   getCountFromServer,
 } from "firebase/firestore";
 import { storage } from "../_utils/firebase";
@@ -90,20 +91,26 @@ export const addDish = async (userId, dish, img) => {
   }
 };
 
-export const getUserPosts = async (userId) => {
+export const getUserPosts = (userId, onUpdate) => {
   try {
     const docRef = collection(db, "users", userId, "dishes");
-    const docSnap = await getDocs(docRef);
 
-    const mappedItems = docSnap.docs.map((postDoc) => ({
-      id: postDoc.id,
-      ...postDoc.data(),
-    }));
-    return mappedItems;
+    const unsubscribe = onSnapshot(docRef, (snapshot) => {
+      const userPosts = snapshot.docs.map((post) => ({
+        id: post.id,
+        ...post.data(),
+      }));
+      onUpdate(userPosts);
+    });
+
+    return unsubscribe;
   } catch (error) {
-    console.error("Error in getDishes: ", error);
+    console.error("Error in getItems: ", error);
+    // Handle the error by calling onUpdate with an empty array or other error handling logic
+    onUpdate([]);
   }
 };
+
 
 export const getUserID = async () => {
   try {
@@ -118,35 +125,99 @@ export const getUserID = async () => {
   }
 };
 
-export const getAllPosts = async () => {
+// export const getAllPosts = async () => {
+//   try {
+//     const userIDs = await getUserID();
+//     const posts = [];
+
+//     for (const id of userIDs) {
+//       const userPosts = await getUserPosts(id);
+//       posts.push(...userPosts);
+//     }
+
+//     return posts;
+//   } catch (error) {
+//     console.error("Error in getAllPosts: ", error);
+//     throw error; // Rethrow the error to handle it outside of this function if needed
+//   }
+// };
+
+//***** THIS FUNCTION IS WORKING *****
+export const getAllPosts = (onUpdate) => {
   try {
-    const userIDs = await getUserID();
-    const posts = [];
-
-    for (const id of userIDs) {
-      const userPosts = await getUserPosts(id);
-      posts.push(...userPosts);
-    }
-
-    return posts;
+    const usersCollectionRef = collection(db, "users");
+    const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
+      const allPosts = [];
+      snapshot.forEach((userDoc) => {
+        const userId = userDoc.id;
+        const dishesCollectionRef = collection(db, "users", userId, "dishes");
+        const userPostsUnsubscribe = onSnapshot(dishesCollectionRef, (dishesSnapshot) => {
+          const userPosts = dishesSnapshot.docs.map((post) => ({
+            id: post.id,
+            ...post.data(),
+          }));
+          allPosts.push(...userPosts);
+          onUpdate(allPosts);
+        });
+      });
+    });
+    return unsubscribe;
   } catch (error) {
     console.error("Error in getAllPosts: ", error);
-    throw error; // Rethrow the error to handle it outside of this function if needed
+    // Handle the error by calling onUpdate with an empty array or other error handling logic
+    onUpdate([]);
   }
 };
 
-export const getPost = async (postId) => {
-  try {
-    const userIDs = await getUserID();
+// export const getPost = async (userId, postId) => {
+//   try {
+//     //const docRef = doc(collection(db, "users", userId, "dishes"), postId);
+//     const docRef = doc(db, "users", userId, "dishes", postId);
+//     const docSnap = await getDocs(docRef);
 
-    for (const id of userIDs) {
-      const userPosts = await getUserPosts(id);
+//     if (docSnap.exists()) {
+//       const post = {id: docSnap.id, ...docSnap.data()};
+//       return post;
+//     } else {
+//       return null;
+//     }
+//     // const mappedItems = docSnap.docs.map((postDoc) => ({
+//     //   id: postDoc.id,
+//     //   ...postDoc.data(),
+//     // }));
+//     //return mappedItems;
+//   } catch (error) {
+//     console.error("Error in getPost: ", error);
+//   }
+// };
+
+export const getUserPostForGetPost = async (userId) => {
+  try {
+    const docRef = collection(db, "users", userId, "dishes");
+    const docSnap = await getDocs(docRef);
+
+    const mappedItems = docSnap.docs.map((postDoc) => ({
+      id: postDoc.id,
+      ...postDoc.data(),
+    }));
+    return mappedItems;
+  } catch (error) {
+    console.error("Error in getDishes: ", error);
+  }
+};
+
+export const getPost = async (userId, postId) => {
+  try {
+    //const userIDs = await getUserID();
+
+    //for (const id of userIDs) {
+      const userPosts = await getUserPostForGetPost(userId);
       const post = userPosts.find((post) => post.id === postId);
 
       if (post) {
         return post;
       }
-    }
+    //}
 
     return null;
   } catch (error) {

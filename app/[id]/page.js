@@ -3,13 +3,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import PostInfo from "../components/post-info";
 import { getPost } from "../_services/recipe-service";
+import { useUserAuth } from "../_utils/auth-context";
 
 export default function Page({ params }) {
+  const { user } = useUserAuth();
   const [post, setPost] = useState({});
 
 
   const fetchPost = async () => {
-    const post = await getPost(params.id);
+    const post = await getPost(user.uid, params.id);
     setPost(post);
   };
 
