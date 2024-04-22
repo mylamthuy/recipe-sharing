@@ -1,14 +1,8 @@
 import React, {useState, useRef, useEffect} from "react";
 
 export default function IngredientModal ({closeModal, onSave, defaultValue}) {
-    //const [editedIngredient, setEditedIngredient] = useState(defaultValue || "");
     const editIngredientRef = useRef(defaultValue || "");
     const [error, setError] = useState("");
-
-    // const handleChange = (e) => {
-    //     setEditedIngredient(e.target.value);
-    //     setError("");
-    // };
 
     useEffect(() => {
         // Set the initial value of the input element when defaultValue changes
@@ -34,15 +28,13 @@ export default function IngredientModal ({closeModal, onSave, defaultValue}) {
             <div 
                 className="w-full max-w-md bg-white p-6 rounded-lg shadow-md flex flex-col items-center"
                 onClick={(e) => {
-                    e.stopPropagation(); // prevent click from bubbling up to parent div
+                    e.stopPropagation();
                   }}>
                 <p className="text-lg font-libre-baskerville font-bold text-center content-color">Update Ingredient</p>
                     <input
                         className="w-11/12 p-2 block mt-4 mb-2 content-color font-roboto text-base rounded-lg secondary-background-color border border-color focus:border-2 focus:outline-none"
                         name="ingredient"
                         ref={editIngredientRef}
-                        //value={editedIngredient}
-                        //onChange={handleChange}
                     >
                     </input>
                     {error && <p className="text-red-600 text-sm font-roboto mb-4">{error}</p>}

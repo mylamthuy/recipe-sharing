@@ -11,7 +11,7 @@ export default function Page({ params }) {
 
 
   const fetchPost = async () => {
-    const post = await getPost(user.uid, params.id);
+    const post = await getPost(params.id);
     setPost(post);
   };
 

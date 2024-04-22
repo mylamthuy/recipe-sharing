@@ -19,9 +19,7 @@ function DishList({ dishes }) {
   }
 
   const dishOnClick = (id) => {
-    // alert(`Dish ${id} clicked`);
   };
-  // const renderDishes = () => {
     return (
       <div className="mb-10">
         <div className="text-right mr-10">
@@ -54,6 +52,5 @@ function DishList({ dishes }) {
       </div>
     );
   };
-  // return renderDishes();
 
 export default DishList;

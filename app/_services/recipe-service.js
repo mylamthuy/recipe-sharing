@@ -8,17 +8,15 @@ import {
   doc,
   getDoc,
   setDoc,
-  onSnapshot,
   deleteDoc,
   getCountFromServer,
 } from "firebase/firestore";
 import { storage } from "../_utils/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
-import { useState } from "react";
 
 export const addDish = async (userId, dish, img) => {
-  console.log(img);
+  //console.log(img);
   try {
     // Check if the userId document exists
     const userDocRef = doc(db, "users", userId);
@@ -67,9 +65,6 @@ export const addDish = async (userId, dish, img) => {
     } else {
       // Upload image and update image URL
       const userImagesRef = ref(storage, `images/${img.name + v4()}`);
-      // uploadBytes(userImagesRef, img).then(() => {
-      //   alert("Image uploaded successfully");
-      // });
 
       const imageName = `${v4() + "_" + userId + "_"}`;
       const imageRef = ref(userImagesRef, imageName);
@@ -122,108 +117,9 @@ export const deleteDish = async (userId, postId) => {
   }
 };
 
-// Get user Posts
-export const getUserPosts = (userId, onUpdate) => {
-  try {
-    const docRef = collection(db, "users", userId, "dishes");
 
-    const unsubscribe = onSnapshot(docRef, (snapshot) => {
-      const userPosts = snapshot.docs.map((post) => ({
-        id: post.id,
-        ...post.data(),
-      }));
-      onUpdate(userPosts);
-    });
-
-    return unsubscribe;
-  } catch (error) {
-    console.error("Error in getItems: ", error);
-    // Handle the error by calling onUpdate with an empty array or other error handling logic
-    onUpdate([]);
-  }
-};
-
-
-export const getUserID = async () => {
-  try {
-    const usersCollectionRef = collection(db, "users");
-    const usersSnapshot = await getDocs(usersCollectionRef);
-
-    const userIds = usersSnapshot.docs.map((doc) => doc.id);
-    return userIds;
-  } catch (error) {
-    console.error("Error in getAllUserIds: ", error);
-    throw error; // Rethrow the error to handle it in the component
-  }
-};
-
-// export const getAllPosts = async () => {
-//   try {
-//     const userIDs = await getUserID();
-//     const posts = [];
-
-//     for (const id of userIDs) {
-//       const userPosts = await getUserPosts(id);
-//       posts.push(...userPosts);
-//     }
-
-//     return posts;
-//   } catch (error) {
-//     console.error("Error in getAllPosts: ", error);
-//     throw error; // Rethrow the error to handle it outside of this function if needed
-//   }
-// };
-
-//***** THIS FUNCTION IS WORKING *****
-export const getAllPosts = (onUpdate) => {
-  try {
-    const usersCollectionRef = collection(db, "users");
-    const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
-      const allPosts = [];
-      snapshot.forEach((userDoc) => {
-        const userId = userDoc.id;
-        const dishesCollectionRef = collection(db, "users", userId, "dishes");
-        const userPostsUnsubscribe = onSnapshot(dishesCollectionRef, (dishesSnapshot) => {
-          const userPosts = dishesSnapshot.docs.map((post) => ({
-            id: post.id,
-            ...post.data(),
-          }));
-          allPosts.push(...userPosts);
-          onUpdate(allPosts);
-        });
-      });
-    });
-    return unsubscribe;
-  } catch (error) {
-    console.error("Error in getAllPosts: ", error);
-    // Handle the error by calling onUpdate with an empty array or other error handling logic
-    onUpdate([]);
-  }
-};
-
-// export const getPost = async (userId, postId) => {
-//   try {
-//     //const docRef = doc(collection(db, "users", userId, "dishes"), postId);
-//     const docRef = doc(db, "users", userId, "dishes", postId);
-//     const docSnap = await getDocs(docRef);
-
-//     if (docSnap.exists()) {
-//       const post = {id: docSnap.id, ...docSnap.data()};
-//       return post;
-//     } else {
-//       return null;
-//     }
-//     // const mappedItems = docSnap.docs.map((postDoc) => ({
-//     //   id: postDoc.id,
-//     //   ...postDoc.data(),
-//     // }));
-//     //return mappedItems;
-//   } catch (error) {
-//     console.error("Error in getPost: ", error);
-//   }
-// };
-
-export const getUserPostForGetPost = async (userId) => {
+// Get user posts function
+export const getUserPosts = async (userId) => {
   try {
     const docRef = collection(db, "users", userId, "dishes");
     const docSnap = await getDocs(docRef);
@@ -238,18 +134,51 @@ export const getUserPostForGetPost = async (userId) => {
   }
 };
 
-export const getPost = async (userId, postId) => {
+// Get all user IDs
+export const getUserID = async () => {
   try {
-    //const userIDs = await getUserID();
+    const usersCollectionRef = collection(db, "users");
+    const usersSnapshot = await getDocs(usersCollectionRef);
 
-    //for (const id of userIDs) {
-      const userPosts = await getUserPostForGetPost(userId);
+    const userIds = usersSnapshot.docs.map((doc) => doc.id);
+    return userIds;
+  } catch (error) {
+    console.error("Error in getAllUserIds: ", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+// Get all posts
+export const getAllPosts = async () => {
+  try {
+    const userIDs = await getUserID();
+    const posts = [];
+
+    for (const id of userIDs) {
+      const userPosts = await getUserPosts(id);
+      posts.push(...userPosts);
+    }
+
+    return posts;
+  } catch (error) {
+    console.error("Error in getAllPosts: ", error);
+    throw error; // Rethrow the error to handle it outside of this function if needed
+  }
+};
+
+// Get post by ID
+export const getPost = async (postId) => {
+  try {
+    const userIDs = await getUserID();
+
+    for (const id of userIDs) {
+      const userPosts = await getUserPosts(id);
       const post = userPosts.find((post) => post.id === postId);
 
       if (post) {
         return post;
       }
-    //}
+    }
 
     return null;
   } catch (error) {
@@ -257,27 +186,3 @@ export const getPost = async (userId, postId) => {
     throw error; // Rethrow the error to handle it in the component
   }
 };
-
-// export const addRecipe = async (userId, recipeData) => {
-//     try {
-//       const { title, content, image } = recipeData;
-//       const dishData = {
-//         title,
-//         content,
-//         imageUrl: null,
-//       };
-
-//       // Upload image and then add recipe
-//       if (image && image.size > 0) {
-//         const imageUrl = await uploadImage(image);
-//         dishData.imageUrl = imageUrl;
-//       }
-
-//       await addDish(userId, dishData);
-
-//       // Additional logic if needed...
-
-//     } catch (error) {
-//       console.error("Error in addRecipe: ", error);
-//     }
-//   };

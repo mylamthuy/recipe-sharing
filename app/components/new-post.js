@@ -10,7 +10,7 @@ import InstructionModal from "./instructionModal";
 import { addDish } from "../_services/recipe-service";
 import { useUserAuth } from "../_utils/auth-context";
 
-export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
+export default function NewPost({ onCloseForm }) {
   const { user } = useUserAuth();
 
     const postTitleRef = useRef("");
@@ -32,14 +32,13 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
     const [instrError, setInstrError] = useState("");
 
   // Ingredient functions
-  
   const handleAddIngredient = (e) => {
     const ingredientInput = ingredientRef.current.value;
     if (ingredientInput.trim() !== "") {
       e.preventDefault();
       setIngreError("");
       setIngredients([...ingredients, ingredientInput.trim()]);
-      ingredientRef.current.value = ""; // Clear input field after adding ingredient
+      ingredientRef.current.value = "";
     } else {
       e.preventDefault(); // Prevent form submission if ingredient input is empty
     }
@@ -81,8 +80,6 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
     const instructionStep = stepTitleRef.current.value;
     const instructionDescription = instructionDescRef.current.value;
     if (instructionStep.trim() !== "" && instructionDescription.trim() !== "") {
-      console.log("step:", instructionStep);
-      console.log("description:", instructionDescription);
       setInstrError("");
       setInstructions([
         ...instructions,
@@ -91,7 +88,6 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
           description: instructionDescription.trim(),
         },
       ]);
-      console.log("instructions:", instructions);
       stepTitleRef.current.value = "";
       instructionDescRef.current.value = "";
     }
@@ -268,7 +264,7 @@ export default function NewPost({ onCreatePost, onCloseForm, onSetImage }) {
                 type="file"
                 onChange={(e) => {
                   // Log the selected file object to verify
-                  console.log("Selected file:", e.target.files[0]);
+                  //console.log("Selected file:", e.target.files[0]);
 
                   // Update state with the selected file
                   setImage(e.target.files[0]);
