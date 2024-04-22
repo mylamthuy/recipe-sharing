@@ -2,8 +2,43 @@ import React from "react";
 import Heading1 from "./heading1";
 import Heading2 from "./heading2";
 import Heading3 from "./heading3";
+import { useUserAuth } from "../_utils/auth-context";
+import {useState, useEffect} from "react";
+import { checkUserPost, deleteDish } from "../_services/recipe-service";
+import Link from "next/link";
 
 function PostInfo({ data }) {
+  const { user } = useUserAuth();
+  const [checkOwnership, setCheckOwnership] = useState();
+  const [uid, setUid] = useState();
+
+  useEffect(() => {
+    if (user) {
+      console.log("User:", uid);
+      checkUserPost(user.uid, data.id)
+        .then((result) => {
+          setCheckOwnership(result);
+          setUid(user.uid);
+          console.log("Ownership:", checkOwnership);
+        })
+        .catch((error) => {
+          console.error("Error checking ownership:", error);
+        });
+    }
+  }, [user, data.id, checkOwnership]);
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("Deleting dish:", data.id);
+      console.log("User:", uid); // Use uid instead of user.id
+      await deleteDish(uid, data.id);
+      // After successful deletion, navigate back to the main page
+    } catch (error) {
+      console.error("Error deleting dish:", error);
+      // Handle the error, show a message to the user, etc.
+    }
+  };
+
   return (
     <div className="flex justify-center items-center">
       <div className="border-2 border-color rounded-3xl w-11/12 my-10">
@@ -59,6 +94,11 @@ function PostInfo({ data }) {
               )}
             </div>
           </div>
+          {checkOwnership === true ? (
+            <button onClick={handleDelete}>
+              <Link href="/">Delete Button</Link>
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

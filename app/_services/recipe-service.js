@@ -9,6 +9,7 @@ import {
   getDoc,
   setDoc,
   onSnapshot,
+  deleteDoc,
   getCountFromServer,
 } from "firebase/firestore";
 import { storage } from "../_utils/firebase";
@@ -91,6 +92,37 @@ export const addDish = async (userId, dish, img) => {
   }
 };
 
+// Delete post
+export const checkUserPost = async (userId, postId) => {
+  try {
+    const docRef = doc(db, "users", userId, "dishes", postId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      // Post exists for the user
+      return true;
+    } else {
+      // Post does not exist for the user
+      return false;
+    }
+  } catch (error) {
+    console.error("Error checking user post:", error);
+    return false; // Return false in case of any error
+  }
+};
+
+export const deleteDish = async (userId, postId) => {
+  try {
+    const docRef = doc(db, "users", userId, "dishes", postId);
+    await deleteDoc(docRef);
+    alert("Recipe deleted successfully");
+  } catch (error) {
+    console.error("Error in deleteDish: ", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+// Get user Posts
 export const getUserPosts = (userId, onUpdate) => {
   try {
     const docRef = collection(db, "users", userId, "dishes");

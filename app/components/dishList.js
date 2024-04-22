@@ -31,7 +31,7 @@ function DishList({ dishes }) {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >
-            <option value = "all">All</option>
+            <option key="all" value = "all">All</option>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -39,27 +39,18 @@ function DishList({ dishes }) {
             ))}
           </select>
         </div>
-          {/* <option value="all">All</option>
-          <option value="indian">Indian</option>
-          <option value="korean">Korean</option>
-          <option value="chinese">Chinese</option>
-          <option value="vietnamese">Vietnamese</option>
-          <option value="western">Western</option>
-          <option value="thai">Thai</option>
-          <option value="european">European</option>
-          <option value="other">Other</option> */}
-          <div className="flex flex-row flex-wrap justify-middle mt-5 mr-5">
-            {dishes.map((dish) => (
-              <div key={dish.id} className="ml-10">
-                <Dish
-                  id={dish.id}
-                  img={dish.imageUrl}
-                  title={dish.title}
-                  onClick={dishOnClick}
-                />
-              </div>
-            ))}
-          </div>
+        <div className="flex flex-row flex-wrap justify-middle mt-5 mr-5">
+          {dishes.map((dish) => (
+            <div key={dish.id} className="ml-10">
+              <Dish
+                id={dish.id}
+                img={dish.imageUrl}
+                title={dish.title}
+                onClick={dishOnClick}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
